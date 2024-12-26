@@ -7,7 +7,7 @@ pub async fn init_db() -> Result<PgPool, sqlx::Error> {
 }
 
 pub async fn fetch_all_cities(pool: &Pool<Postgres>) -> Result<Vec<City>, sqlx::Error> {
-    let rows = sqlx::query_as!(City, "SELECT id, name FROM cities")
+    let rows = sqlx::query_as!(City, "SELECT id, city_name FROM cities")
         .fetch_all(pool)
         .await?;
     Ok(rows)

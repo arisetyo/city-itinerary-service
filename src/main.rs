@@ -1,5 +1,6 @@
 use salvo::prelude::*;
 mod handlers;
+mod models;
 mod routes;
 mod db;
 

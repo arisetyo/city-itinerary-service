@@ -1,6 +1,6 @@
 use salvo::prelude::*;
 use crate::db;
-use crate::models::city::City;
+// use crate::models::city::City;
 
 #[handler]
 pub async fn get_cities(res: &mut Response) {
