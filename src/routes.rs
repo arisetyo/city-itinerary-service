@@ -1,8 +1,8 @@
 /// This function creates and returns a router with the following endpoints:
 ///
-/// - `POST /`: Calls the `create_itinerary` handler to create a new itinerary.
-/// - `GET /`: Calls the `get_itineraries` handler to retrieve all itineraries.
-/// - `GET /cities`: Calls the `get_cities` handler to retrieve all cities.
+/// - `POST /itineraries`   : Calls the `create_itinerary` handler to create a new itinerary.
+/// - `GET  /itineraries`   : Calls the `get_itineraries` handler to retrieve all itineraries.
+/// - `GET  /cities`        : Calls the `get_cities` handler to retrieve all cities.
 
 use salvo::prelude::*;
 use crate::handlers::cities;
