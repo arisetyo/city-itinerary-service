@@ -2,8 +2,9 @@ use serde::{Deserialize, Serialize};
 use chrono::NaiveDateTime;
 
 #[derive(Serialize, Deserialize)]
-pub struct City {
+pub struct User {
     pub id: i32,
-    pub city_name: String,
+    pub google_id: String,
+    pub email: String,
     pub created_at: NaiveDateTime,
 }
