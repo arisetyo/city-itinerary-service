@@ -53,8 +53,11 @@ pub async fn create_city(req: &mut Request, res: &mut Response) {
 
     let pool = db::init_db().await.unwrap();
     match save_city(&pool, &city_data).await {
-        Ok(saved_city) => {
-            res.render(Json(saved_city));
+        Ok(_saved_city) => {
+            res.render(Json(json!({
+                "status": "OK",
+                "city": city_data
+            })));
         }
         Err(e) => {
             res.set_status_code(StatusCode::INTERNAL_SERVER_ERROR);
