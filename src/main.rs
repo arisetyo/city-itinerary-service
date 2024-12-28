@@ -1,7 +1,7 @@
 extern crate city_itinerary_service;
 
 use salvo::prelude::*;
-use city_itinerary_service::{handlers, models, routes, db};
+use city_itinerary_service::{routes, db};
 
 #[tokio::main]
 async fn main() {

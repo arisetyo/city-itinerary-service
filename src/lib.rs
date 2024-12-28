@@ -1,7 +1,7 @@
-mod handlers;
-mod models;
-mod routes;
-mod db;
+pub mod handlers;
+pub mod models;
+pub mod routes;
+pub mod db;
 
 pub use handlers::*;
 pub use models::*;
