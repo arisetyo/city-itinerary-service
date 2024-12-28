@@ -1,9 +1,11 @@
 use salvo::prelude::*;
+use serde_json::json;
+use chrono::Utc;
+use tokio::time::{sleep, Duration};
 use crate::db;
 use crate::models::itinerary::Itinerary;
 use crate::handlers::openai::fetch_openai_response;
-use chrono::{NaiveDateTime, Utc};
-use tokio::time::{sleep, Duration};
+
 
 pub async fn fetch_all_itineraries(pool: &sqlx::Pool<sqlx::Postgres>) -> Result<Vec<Itinerary>, sqlx::Error> {
     let rows = sqlx::query_as!(
