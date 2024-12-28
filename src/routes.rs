@@ -20,4 +20,6 @@ pub fn create_router() -> Router {
         .get(users::get_users))
     .push(Router::new().path("city")
         .post(cities::create_city))
+    .push(Router::new().path("city_itinerary")
+        .get(itineraries::get_city_itinerary))
 }
