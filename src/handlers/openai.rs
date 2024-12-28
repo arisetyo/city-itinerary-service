@@ -3,6 +3,9 @@ use serde_json::Value;
 use std::env;
 
 pub async fn fetch_openai_response(city_name: &str) -> Result<Value, reqwest::Error> {
+    // This is needed for test because the test is not running in the same context as the main application
+    dotenv::dotenv().ok(); // Load .env file
+
     let api_key = env::var("OPENAI_API_KEY").expect("OPENAI_API_KEY must be set");
     let client = Client::new();
     let request_body = serde_json::json!({
