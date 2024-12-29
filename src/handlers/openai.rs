@@ -10,8 +10,8 @@ pub async fn fetch_openai_response(city_name: &str) -> Result<Value, reqwest::Er
     let client = Client::new();
     let request_body = serde_json::json!({
         "model": "text-davinci-003",
-        "prompt": format!("Provide a day-to-day activity for a tourist visiting {}", city_name),
-        "max_tokens": 100,
+        "prompt": format!("Provide a day-to-day activity for a tourist visiting {} for 3 days. Important: return the answer in a JSON array format.", city_name),
+        "max_tokens": 1000,
     });
 
     let response = client
@@ -23,6 +23,8 @@ pub async fn fetch_openai_response(city_name: &str) -> Result<Value, reqwest::Er
 
     let response_json: Value = response.json().await?;
     let itinerary = response_json["choices"][0]["text"].as_str().unwrap_or("").trim();
+
+    println!("-----> Actual OpenAI result: {}", itinerary);
 
     let mut itinerary_json = serde_json::Map::new();
     for (i, activity) in itinerary.split('\n').enumerate() {
