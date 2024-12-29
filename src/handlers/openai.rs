@@ -10,10 +10,7 @@ pub async fn fetch_openai_response(city_name: &str) -> Result<Value, Box<dyn std
     let api_key = env::var("OPENAI_API_KEY").expect("OPENAI_API_KEY must be set");
     let org_id = env::var("OPENAI_ORGANIZATION").expect("OPENAI_ORGANIZATION must be set");
 
-    let prompt = format!("Provide a day-to-day activity for a tourist visiting {} for 3 days. Return the answer in a JSON format.", city_name);
-
-    // DEBUG
-    println!("prompt: {}", prompt); // TODO: Remove this line
+    let prompt = format!("Provide a day-to-day name of locations for a tourist visiting {} for 3 days. Return the answer in a JSON format. Max 4 locations (formatted as an array) for each day.", city_name);
 
     let config = OpenAIConfig::new()
         .with_api_key(api_key)
@@ -30,15 +27,9 @@ pub async fn fetch_openai_response(city_name: &str) -> Result<Value, Box<dyn std
 
     let response = client.completions().create(request).await?;
     let itinerary_result = response.choices[0].text.trim();
-    // DEBUG
-    println!("itinerary_result: {}", itinerary_result); // TODO: Remove this line
+    
+    // Convert the JSON format string to a JSON object
+    let itinerary_json: Value = serde_json::from_str(itinerary_result)?;
 
-    // Convert the CSV format string to a JSON object
-    let mut itinerary_json = serde_json::Map::new();
-    for (i, activity) in itinerary_result.split(',').enumerate() {
-        let day = format!("day {}", i + 1);
-        itinerary_json.insert(day, Value::String(activity.trim().to_string()));
-    }
-
-    Ok(Value::Object(itinerary_json))
+    Ok(itinerary_json)
 }

@@ -11,7 +11,6 @@
 ///
 /// This command will execute the `test_fetch_openai_response` function, which tests the `fetch_openai_response`
 
-use serde_json::json;
 use city_itinerary_service::handlers::openai::fetch_openai_response;
 
 /// This test function mocks the OpenAI API response and tests the `fetch_openai_response` function.
@@ -24,7 +23,7 @@ async fn test_fetch_openai_response() {
         Ok(response_json) => {
             let response = serde_json::to_string(&response_json).unwrap();
             // Print the response in a readable format
-            println!("-----> Response: {}", response);
+            println!("-----> Response in TEST ENVIRONMENT: {}", response);
         }
         Err(e) => {
             println!("-----> Error fetching OpenAI response: {:?}", e);
