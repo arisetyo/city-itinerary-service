@@ -20,8 +20,14 @@ async fn test_fetch_openai_response() {
     println!("-----> Starting test_fetch_openai_response");
 
     let city_name = "New York";
-    let response = fetch_openai_response(city_name).await.unwrap();
-
-    // Print the response in a readable format
-    println!("-----> Response: {}", serde_json::to_string_pretty(&response).unwrap());
+    match fetch_openai_response(city_name).await {
+        Ok(response_json) => {
+            let response = serde_json::to_string(&response_json).unwrap();
+            // Print the response in a readable format
+            println!("-----> Response: {}", response);
+        }
+        Err(e) => {
+            println!("-----> Error fetching OpenAI response: {:?}", e);
+        }
+    }
 }

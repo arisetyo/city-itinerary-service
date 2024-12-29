@@ -36,6 +36,7 @@ pub async fn check_itinerary_exists(pool: &sqlx::Pool<sqlx::Postgres>, user_id: 
     Ok(row.count.unwrap_or(0) > 0)
 }
 
+
 #[handler]
 pub async fn get_city_itinerary(req: &mut Request, res: &mut Response) {
     let city_name = req.query::<String>("city_name").unwrap();
@@ -52,7 +53,12 @@ pub async fn get_city_itinerary(req: &mut Request, res: &mut Response) {
     // Rate limiter: wait for 1 second before making the request
     sleep(Duration::from_secs(1)).await;
 
-    match fetch_openai_response(&city_name).await {
+    let city_name_clone = city_name.clone();
+    let fetch_future = tokio::spawn(async move {
+        fetch_openai_response(&city_name_clone).await
+    });
+
+    match fetch_future.await.unwrap() {
         Ok(itinerary) => {
             let new_itinerary = Itinerary {
                 id: 0,
@@ -84,6 +90,7 @@ pub async fn get_city_itinerary(req: &mut Request, res: &mut Response) {
         }
     }
 }
+
 
 #[handler]
 pub async fn get_itineraries(res: &mut Response) {
