@@ -68,21 +68,22 @@ pub async fn get_city_itinerary(req: &mut Request, res: &mut Response) {
                 created_at: Utc::now().naive_utc(),
             };
 
-            sqlx::query!(
+            let result = sqlx::query!(
                 r#"
                 INSERT INTO itineraries (user_id, city_name, itinerary, created_at)
                 VALUES ($1, $2, $3, $4)
+                RETURNING id
                 "#,
                 new_itinerary.user_id,
                 new_itinerary.city_name,
                 new_itinerary.itinerary,
                 new_itinerary.created_at
             )
-            .execute(&pool)
+            .fetch_one(&pool)
             .await
             .unwrap();
 
-            res.render(Json(new_itinerary));
+            res.render(Json(json!({"id": result.id, "message": "Itinerary created successfully"})));
         }
         Err(e) => {
             res.set_status_code(StatusCode::INTERNAL_SERVER_ERROR);
